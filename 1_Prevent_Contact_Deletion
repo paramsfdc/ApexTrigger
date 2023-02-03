@@ -1,6 +1,6 @@
 //trigger to Prevent deleting of a contact if it has a related Account.
 
-trigger contactaccountck on Contact (before delete) {
+trigger demo on Contact (before delete) {
     
     contactaccountck.accountck(trigger.old);
 

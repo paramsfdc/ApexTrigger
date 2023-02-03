@@ -1,0 +1,20 @@
+//trigger
+trigger contactaccountck on Contact (before delete) {
+    
+    contactaccountck.accountck(trigger.old);
+
+}
+
+
+//HandlerClass
+
+public class contactaccountck {	
+    public static void accountck(list<contact>conlist){
+        for(contact con: conlist){
+            if(contact.accountId != null){
+                con.adderror('cannot deleterw');
+            }
+        }
+    }
+
+}

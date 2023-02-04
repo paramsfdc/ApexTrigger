@@ -1,0 +1,26 @@
+trigger caseNumberAccountUpdate on case (after insert) {
+       if(trigger.isafter && trigger.isinsert){
+			CaseNumbUpda.helperMeth(trigger.new);
+		}
+	   
+}
+//Helper class
+public class CaseNumbUpda 
+{
+    public static void helperMeth(list<case>caselist) 
+    {
+        map<id,string> mapofcase = new map<id,string>();
+        for(case c :caselist)
+        {
+                mapofcase.put(c.accountId, c.casenumber);
+        }
+        list<account>acc_upd = new list<account>();
+        for(account acc: [select id, number_of_case__c from account where id in : mapofcase.keyset()])
+        {
+            acc.number_of_case__c = mapofcase.get(acc.id);
+                acc_upd.add(acc);
+        }
+           if(acc_upd.size()>0 )
+                update acc_upd;        
+    }
+}

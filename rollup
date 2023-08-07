@@ -1,0 +1,26 @@
+new trigger //must
+
+
+
+
+public class OpportunityTrigger123Helper {
+    public static void OverAllAccountStatus(list<Opportunity> oppparam){
+        set<id> ACCId =  new set<id>();
+        for(Opportunity opp: oppparam){
+            ACCId.add(opp.accountid);            
+        }    
+        list<Account> acc_upd = new list<account>();
+        for(AggregateResult agr : [select accountId, sum(price__c) FROM opportunity where accountId IN : ACCid group by accountID]){
+            account acc = new account();
+            acc.id = (id)agr.get('accountID');
+            acc.Total_Price__c = (decimal)agr.get('expr0');  
+            acc_upd.add(acc);
+        }
+        if(acc_upd.size()>0){
+            upsert acc_upd;
+        }
+        
+    }
+   
+          
+    }
